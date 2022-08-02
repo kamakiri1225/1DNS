@@ -24,9 +24,6 @@
     <ClCompile Include="Fields.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Diff1d.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Solution1D.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>

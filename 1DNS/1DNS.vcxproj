@@ -127,7 +127,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Diff1d.cpp" />
     <ClCompile Include="Fields.cpp" />
     <ClCompile Include="FileWriter.cpp" />
     <ClCompile Include="main.cpp" />

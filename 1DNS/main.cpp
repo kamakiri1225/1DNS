@@ -38,16 +38,17 @@ int main()
 	PrintVector(Unew, U_name);
 
 	//file writer
-	string name = "1dLinearConvec";
+	string name = "1dBurgers _initial";
 	FileWriter filewriterObject_;
 
 	filewriterObject_.write1dField(Unew, name);
 
-	// solution class
-	int ntimestep = 1000;
-	double dt = 0.01;
-	fd1d::Diff1d diff1d;
-	Solution1d sol1d(ntimestep, dt);
+	// solution
+	int ntimestep = 500;
+	double dt = 0.001;
+	double visc = 1e-3;
+
+	Solution1d sol1d(ntimestep, dt, visc);
 
 	for (int nt = 0; nt < sol1d.nt; nt++)
 	{
@@ -55,12 +56,23 @@ int main()
 		U= Unew;
 		double wavespeed = 1.0;
 		double cdt = sol1d.dt * wavespeed;
-		Fields::vectorField1d Diff = diff1d.gradX1d(U); 
-		Unew = U - (cdt * Diff); // du/dt = c*du/dx => Unew{i} = U{i} - c*dt(u{i} - u{i-1})/dx 
-	}
+		
+		Fields::vectorField1d Diff1 = fd1d::gradX1d(U);
+		Fields::vectorField1d Diff2 = fd1d::laplacianX1d(U);
+		Fields::vectorField1d E = sol1d.dt * (U && Diff1);
+		Fields::vectorField1d D = sol1d.dt * sol1d.visc * Diff2;
+
+		//Unew = U - (cdt * Diff1); // du/dt = c*du/dx => unew{i} = u{i} - c*dt(u{i} - u{i-1})/dx 
+		//Unew = U - sol1d.dt * (U && Diff1); // du/dt = u*du/dx => unew{i} = u{i} - u*dt(u{i} - u{i-1})/dx 
+		Unew = U - E + D;
+
+		// é¸ä˙ã´äEèåè
+		double dx = mesh_.dx1d;
+		Unew[0].value = U[0].value - (sol1d.dt * U[0].value * (U[0].value - U[U.size() - 1].value) / dx + sol1d.dt * sol1d.visc * (U[1].value - 2.0 * U[0].value + U[U.size() - 1].value) / (dx * dx));
+		}
 
 	//file writer
-	string name2 = "1dLinearConvec_final";
+	string name2 = "1dBurgers_final";
 	FileWriter filewriterObject_1;
 
 	filewriterObject_1.write1dField(Unew, name2);

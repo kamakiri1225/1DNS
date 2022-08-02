@@ -9,7 +9,7 @@ FileWriter::FileWriter()
 void FileWriter::write1dField(Fields::vectorField1d& vec, string& name_)
 {
 	string myfileType = ".dat"; //拡張子
-	string path = "C:\\work\\C_lang\\20220413_diff_C_puls\\004_NS_Eq_1D\\1DNS\\1DNS\\"; //絶対パス
+	string path = "C:\\work\\C_lang\\20220413_diff_C_puls\\004_NS_Eq_1D_blog\\1DNS\\1DNS\\"; //絶対パス
 	string pathName = path.append(name_).append(myfileType); //"myOutput;" + ".dat" => "myOutput.dat"
 	std::cout << "pathName = " << pathName << " :  pathName.size() = " << pathName.size() << std::endl;
 
